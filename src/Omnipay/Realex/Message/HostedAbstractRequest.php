@@ -64,6 +64,10 @@ abstract class HostedAbstractRequest extends RemoteAbstractRequest
             'SHA1HASH' => $this->encode($this->getRequestHash()),
         );
 
+        if ($this->getReturnUrl()) {
+            $request['MERCHANT_RESPONSE_URL'] = $this->encode($this->getReturnUrl());
+        }
+
         return $request;
     }
 
