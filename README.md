@@ -163,7 +163,7 @@ $response->getTransactionReference();
 $response->isRealexSystemError();
 ```
 
-There is a [basic example project](tree/master/examples/hosted-payment) under `examples/hosted-payment` that covers these three portions from an end-to-end viewpoint.
+There is a [basic example project](examples/hosted-payment) under `examples/hosted-payment` that covers these three portions from an end-to-end viewpoint.
 
 ### Additional Documentation
 
