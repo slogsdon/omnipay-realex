@@ -71,6 +71,16 @@ abstract class RemoteAbstractRequest extends AbstractRequest
         return $this->setParameter('returnUrl', $value);
     }
 
+    public function get3dSecure()
+    {
+        return $this->getParameter('3dSecure');
+    }
+
+    public function set3dSecure($value)
+    {
+        return $this->setParameter('3dSecure', $value);
+    }
+
     public function sendData($data)
     {
         // register the payment

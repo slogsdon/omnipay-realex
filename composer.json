@@ -22,10 +22,18 @@
     "autoload": {
         "psr-0": { "Omnipay\\Realex\\" : "src/" }
     },
+    "autoload-dev": {
+        "psr-0": { "Omnipay\\Realex\\Tests\\" : "tests/" }
+    },
     "require": {
         "omnipay/common": "~2.0"
     },
     "require-dev": {
-        "squizlabs/php_codesniffer": "~1.4.4"
+        "squizlabs/php_codesniffer": "~1.5",
+        "omnipay/tests": "^2.1"
+    },
+    "scripts": {
+        "lint": "phpcs --standard=PSR2 src tests",
+        "test": "@composer lint && phpunit --coverage-text"
     }
 }
