@@ -81,18 +81,15 @@ class HostedApmPaymentRequest extends HostedAbstractRequest
     public function getData()
     {
         $request = parent::getData();
+        
+        $this->validate('pmMethods', 'hppCustomerCountry', 'hppCustomerFirstName', 'hppCustomerLastName', 'merchantResponseUrl', 'hppTxstatusUrl');
 
-        if ($this->getAccount()) {
-            $request['ACCOUNT'] = $this->encode($this->getAccount());
-        }
-
-        if ($this->getChannel()) {
-            $request['CHANNEL'] = $this->encode($this->getChannel());
-        }
-
-        if ($this->getAutoSettle()) {
-            $request['AUTO_SETTLE_FLAG'] = $this->encode($this->getAutoSettle());
-        }
+        $request['HPP_CUSTOMER_COUNTRY'] = $this->encode($this->getHppCustomerCountry());
+        $request['HPP_CUSTOMER_FIRSTNAME'] = $this->encode($this->getHppCustomerFirstName());
+        $request['HPP_CUSTOMER_LASTNAME'] = $this->encode($this->getHppCustomerLastName());
+        $request['MERCHANT_RESPONSE_URL'] = $this->encode($this->getMerchantResponseUrl());
+        $request['HPP_TX_STATUS_URL'] = $this->encode($this->getHppTxstatusUrl());
+        $request['PM_METHODS'] = $this->encode($this->getPmMethods());
 
         return $request;
     }
