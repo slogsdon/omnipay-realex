@@ -1,30 +1,9 @@
 <?php
-namespace Omnipay\Realex;
 
-class HostedGateway extends RemoteGateway
+namespace Omnipay\Realex\Message;
+
+class HostedApmPaymentRequest extends HostedAbstractRequest
 {
-
-    public function getName()
-    {
-        return 'Realex Hosted';
-    }
-
-    public function getDefaultParameters()
-    {
-        return array(
-            'merchantId' => '',
-            'account' => '',
-            'secret' => '',
-            '3dSecure' => 0,
-            'pmMethods' => 'cards',
-            'hppCustomerCountry' => '',
-            'hppCustomerFirstName' => '',
-            'hppCustomerLastName' => '',
-            'merchantResponseUrl' => '',
-            'hppTxstatusUrl' => ''
-        );
-    }
-
     public function getPmMethods()
     {
         return $this->getParameter('pmMethods');
@@ -85,29 +64,41 @@ class HostedGateway extends RemoteGateway
         return $this->setParameter('hppTxstatusUrl', $value);
     }
 
-    public function authorize(array $parameters = array())
+    public function getRequestHash()
     {
-        return $this->createRequest('\Omnipay\Realex\Message\HostedAuthRequest', $parameters);
+        $timestamp = $this->getTimestamp();
+        $merchantId = $this->getMerchantId();
+        $orderId = $this->getTransactionId();
+        $amount = $this->getAmountInteger();
+        $currency = $this->getCurrency();
+        $secret = $this->getSecret();
+        $tmp = "$timestamp.$merchantId.$orderId.$amount.$currency";
+        $sha1hash = sha1($tmp);
+        $tmp2 = "$sha1hash.$secret";
+        return sha1($tmp2);
     }
 
-    public function purchase(array $parameters = array())
+    public function getData()
     {
-        $parameters['autoSettle'] = '1';
-        return $this->authorize($parameters);
+        $request = parent::getData();
+
+        if ($this->getAccount()) {
+            $request['ACCOUNT'] = $this->encode($this->getAccount());
+        }
+
+        if ($this->getChannel()) {
+            $request['CHANNEL'] = $this->encode($this->getChannel());
+        }
+
+        if ($this->getAutoSettle()) {
+            $request['AUTO_SETTLE_FLAG'] = $this->encode($this->getAutoSettle());
+        }
+
+        return $request;
     }
 
-    public function completeAuthorize(array $parameters = array())
+    protected function createResponse($data)
     {
-        return $this->createRequest('\Omnipay\Realex\Message\HostedCompleteAuthRequest', $parameters);
-    }
-
-    public function completePurchase(array $parameters = array())
-    {
-        return $this->completeAuthorize($parameters);
-    }
-    
-    public function apmPayment(array $parameters = array())
-    {
-        return $this->createRequest('\Omnipay\Realex\Message\HostedApmPaymentRequest', $parameters);
+        return $this->response = new HostedApmPaymentResponse($this, $data);
     }
 }
