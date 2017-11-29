@@ -1,11 +1,13 @@
 <?php
 require '../../vendor/autoload.php';
 
+
 $gateway = Omnipay\Omnipay::create('Realex_Hosted')
-    ->setMerchantId('merchant id')
+    ->setMerchantId('heartlandgpsandbox')
     ->setSecret('secret')
     ->setAccount('hpp')
     ->setTestMode(true);
+
 
 $response = $gateway->apmPayment([
         'amount' => '1.00',
@@ -18,4 +20,5 @@ $response = $gateway->apmPayment([
         'merchantResponseUrl' => 'https://developer.heartlandpaymentsystems.com',
         'hppTxstatusUrl' => 'https://developer.heartlandpaymentsystems.com',
     ])->send();
-echo '<pre>' . print_r($response, true) . '</pre>';
+
+$response->redirect();
