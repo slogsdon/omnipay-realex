@@ -45,4 +45,27 @@ abstract class HostedAbstractResponse extends AbstractResponse implements Redire
     {
         return $this->getRequest()->getEndpoint();
     }
+
+    public function redirect()
+    {
+        switch ($this->getRequest()->getHppVersion()) {
+            case '2':
+                break;
+            case '1':
+            default:
+                // redirecting from a server-side integration requires
+                // data to be in clear text, so decode the Realex JS
+                // library compatible data
+                $data = array();
+
+                foreach ($this->data as $key => $value) {
+                    $data[$key] = base64_decode($value);
+                }
+
+                $this->data = $data;
+                break;
+        }
+
+        return parent::redirect();
+    }
 }
