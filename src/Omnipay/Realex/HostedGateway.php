@@ -12,13 +12,16 @@ class HostedGateway extends RemoteGateway
     public function getDefaultParameters()
     {
         return array(            
-            'pmMethods' => '',
+            'pmMethods' => 'cards',
             'hppCustomerCountry' => '',
             'hppCustomerFirstName' => '',
             'hppCustomerLastName' => '',
             'merchantResponseUrl' => '',
             'hppTxstatusUrl' => '',
             'hppVersion' => '',
+            'comment1' => '',
+            'comment2' => '',
+            'cardpaymentbutton' => '',
         );
     }
 
@@ -91,6 +94,36 @@ class HostedGateway extends RemoteGateway
     {
         return $this->setParameter('hppCustomerCountry', $value);
     }
+    
+    public function getComment1()
+    {
+        return $this->getParameter('comment1');
+    }
+
+    public function setComment1($value)
+    {
+        return $this->setParameter('comment1', $value);
+    }
+    
+    public function getComment2()
+    {
+        return $this->getParameter('comment2');
+    }
+
+    public function setComment2($value)
+    {
+        return $this->setParameter('comment2', $value);
+    }
+    
+    public function getCardPaymentButton()
+    {
+        return $this->getParameter('cardpaymentbutton');
+    }
+
+    public function setCardPaymentButton($value)
+    {
+        return $this->setParameter('cardpaymentbutton', $value);
+    }        
     
     public function authorize(array $parameters = array())
     {

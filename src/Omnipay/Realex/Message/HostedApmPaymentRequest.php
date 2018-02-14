@@ -2,6 +2,49 @@
 
 namespace Omnipay\Realex\Message;
 
+/**
+ *
+ * Example:
+ *
+ * <code>
+ *   // Create a gateway for the Heartland Gateway
+ *   // (routes to GatewayFactory::create)
+ *   $gateway = Omnipay::create('Realex_Hosted');
+ * 
+ *   // Initialise the gateway
+ *   $gateway->setMerchantId('merchant id')
+ *           ->setSecret('secret')
+ *           ->setAccount('account')
+ *           ->setTestMode(true);
+ *
+ * 	 $response = $gateway->apmPayment([
+ * 			'amount' => '10.00',
+ * 			'currency' => 'EUR',
+ * 			'transactionId' => str_shuffle('abcdefghijklmnopqrstuvwxyz'),
+ * 			'pmMethods' => 'paypal|testpay|sepapm|sofort',
+ * 			'hppCustomerCountry' => 'US',
+ * 			'hppCustomerFirstName' => 'James',
+ * 			'hppCustomerLastName' => 'Mason',
+ * 			'merchantResponseUrl' => 'https://YOURDOMAIN/response.php',
+ * 			'hppTxstatusUrl' => 'https://YOURDOMAIN/response.php',
+ * 			'hppVersion' => 2,
+ * 			'comment1' => 'new paypal payment',
+ * 			'comment2' => 'comment2',
+ * 			'cardpaymentbutton' => 'Charge Me',
+ * 		])->send();
+ *  
+ * 
+ *   if ($response->isRedirect()) {
+ *       $response->redirect();
+ *   }
+ * </code>
+ *
+ * @see  \Omnipay\Realex\Gateway
+ * @codingStandardsIgnoreStart
+ * @link https://developer.realexpayments.com/#!/hpp/alternative-payment-methods/getting-started
+ * @codingStandardsIgnoreEnd
+ */
+
 class HostedApmPaymentRequest extends HostedAbstractRequest
 {   
     public function getPmMethods()
@@ -74,6 +117,36 @@ class HostedApmPaymentRequest extends HostedAbstractRequest
         return $this->setParameter('hppCustomerCountry', $value);
     }
     
+    public function getComment1()
+    {
+        return $this->getParameter('comment1');
+    }
+
+    public function setComment1($value)
+    {
+        return $this->setParameter('comment1', $value);
+    }
+    
+    public function getComment2()
+    {
+        return $this->getParameter('comment2');
+    }
+
+    public function setComment2($value)
+    {
+        return $this->setParameter('comment2', $value);
+    }
+    
+    public function getCardPaymentButton()
+    {
+        return $this->getParameter('cardpaymentbutton');
+    }
+
+    public function setCardPaymentButton($value)
+    {
+        return $this->setParameter('cardpaymentbutton', $value);
+    }        
+    
     public function getRequestHash()
     {
         $timestamp = $this->getTimestamp();
@@ -92,21 +165,36 @@ class HostedApmPaymentRequest extends HostedAbstractRequest
     {
         $request = parent::getData();
         
-        $this->validate('pmMethods', 'hppCustomerCountry', 'hppCustomerFirstName', 'hppCustomerLastName', 'merchantResponseUrl', 'hppTxstatusUrl');
+        $this->validate('hppCustomerCountry', 'hppCustomerFirstName', 'hppCustomerLastName', 'merchantResponseUrl', 'hppTxstatusUrl');
 
+        $request['HPP_VERSION'] = $this->encode($this->getHppVersion());        
         $request['HPP_CUSTOMER_COUNTRY'] = $this->encode($this->getHppCustomerCountry());
         $request['HPP_CUSTOMER_FIRSTNAME'] = $this->encode($this->getHppCustomerFirstName());
         $request['HPP_CUSTOMER_LASTNAME'] = $this->encode($this->getHppCustomerLastName());
         $request['MERCHANT_RESPONSE_URL'] = $this->encode($this->getMerchantResponseUrl());
         $request['HPP_TX_STATUS_URL'] = $this->encode($this->getHppTxstatusUrl());
-        $request['PM_METHODS'] = $this->encode($this->getPmMethods());
-        $request['HPP_VERSION'] = $this->encode($this->getHppVersion());
+        
+        if ($this->getPmMethods()) {
+            $request['PM_METHODS'] = $this->encode($this->getPmMethods());
+        }
+        
+        if($this->getComment1()) {
+            $request['comment1'] = $this->encode($this->getComment1());
+        }
+        
+        if($this->getComment2()) {
+            $request['comment2'] = $this->encode($this->getComment2());
+        }
+        
+        if($this->getCardPaymentButton()) {
+            $request['CARD_PAYMENT_BUTTON'] = $this->encode($this->getCardPaymentButton());
+        }
 
         return $request;
     }
 
     protected function createResponse($data)
-    {
+    {        
         return $this->response = new HostedApmPaymentResponse($this, $data);
     }
 }

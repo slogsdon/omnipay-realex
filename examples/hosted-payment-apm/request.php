@@ -7,23 +7,27 @@ $gateway = Omnipay\Omnipay::create('Realex_Hosted')
     ->setSecret('secret')
     ->setAccount('apmtest')
     ->setTestMode(true);
-	
+
 
 
 $response = $gateway->apmPayment([
         'amount' => '10.00',
         'currency' => 'EUR',
         'transactionId' => str_shuffle('abcdefghijklmnopqrstuvwxyz'),
-        'pmMethods' => 'cards|paypal|testpay|sepapm|sofort',
+        'pmMethods' => 'paypal|testpay|sepapm|sofort',
         'hppCustomerCountry' => 'US',
         'hppCustomerFirstName' => 'James',
         'hppCustomerLastName' => 'Mason',
-        'merchantResponseUrl' => 'http://localhost/master_branches/omnipay-realex/examples/hosted-payment-apm/response.php',
-        'hppTxstatusUrl' => 'http://localhost/master_branches/omnipay-realex/examples/hosted-payment-apm/response.php',
-		'hppVersion' => 2
+        'merchantResponseUrl' => 'https://hpsdomain.dev/response.php',
+        'hppTxstatusUrl' => 'https://hpsdomain.dev/response.php',
+        'hppVersion' => 2,
+        'comment1' => 'new paypal payment',
+        'comment2' => 'comment2',
+        'cardpaymentbutton' => 'Charge Me',
     ])->send();
 
-//echo '<pre>';
-//print_r($response);die;
-
-$response->redirect();
+if ($response->isRedirect()) {
+    $response->redirect();
+} else {
+    echo 'error in process';
+}
