@@ -11,17 +11,14 @@ class HostedGateway extends RemoteGateway
 
     public function getDefaultParameters()
     {
-        return array(
-            'merchantId' => '',
-            'account' => '',
-            'secret' => '',
-            '3dSecure' => 0,
-            'pmMethods' => 'cards',
+        return array(            
+            'pmMethods' => '',
             'hppCustomerCountry' => '',
             'hppCustomerFirstName' => '',
             'hppCustomerLastName' => '',
             'merchantResponseUrl' => '',
-            'hppTxstatusUrl' => ''
+            'hppTxstatusUrl' => '',
+            'hppVersion' => '',
         );
     }
 
@@ -34,17 +31,7 @@ class HostedGateway extends RemoteGateway
     {
         return $this->setParameter('pmMethods', $value);
     }
-
-    public function getHppCustomerCountry()
-    {
-        return $this->getParameter('hppCustomerCountry');
-    }
-
-    public function setHppCustomerCountry($value)
-    {
-        return $this->setParameter('hppCustomerCountry', $value);
-    }
-
+    
     public function getHppCustomerFirstName()
     {
         return $this->getParameter('hppCustomerFirstName');
@@ -85,6 +72,26 @@ class HostedGateway extends RemoteGateway
         return $this->setParameter('hppTxstatusUrl', $value);
     }
 
+    public function setHppVersion($value)
+    {
+        return $this->setParameter('hppVersion', $value);
+    }
+
+    public function getHppVersion()
+    {
+        return $this->getParameter('hppVersion');
+    }
+    
+    public function getHppCustomerCountry()
+    {
+        return $this->getParameter('hppCustomerCountry');
+    }
+
+    public function setHppCustomerCountry($value)
+    {
+        return $this->setParameter('hppCustomerCountry', $value);
+    }
+    
     public function authorize(array $parameters = array())
     {
         return $this->createRequest('\Omnipay\Realex\Message\HostedAuthRequest', $parameters);

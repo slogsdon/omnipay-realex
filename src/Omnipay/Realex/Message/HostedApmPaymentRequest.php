@@ -3,7 +3,7 @@
 namespace Omnipay\Realex\Message;
 
 class HostedApmPaymentRequest extends HostedAbstractRequest
-{
+{   
     public function getPmMethods()
     {
         return $this->getParameter('pmMethods');
@@ -13,17 +13,7 @@ class HostedApmPaymentRequest extends HostedAbstractRequest
     {
         return $this->setParameter('pmMethods', $value);
     }
-
-    public function getHppCustomerCountry()
-    {
-        return $this->getParameter('hppCustomerCountry');
-    }
-
-    public function setHppCustomerCountry($value)
-    {
-        return $this->setParameter('hppCustomerCountry', $value);
-    }
-
+    
     public function getHppCustomerFirstName()
     {
         return $this->getParameter('hppCustomerFirstName');
@@ -64,6 +54,26 @@ class HostedApmPaymentRequest extends HostedAbstractRequest
         return $this->setParameter('hppTxstatusUrl', $value);
     }
 
+    public function setHppVersion($value)
+    {
+        return $this->setParameter('hppVersion', $value);
+    }
+
+    public function getHppVersion()
+    {
+        return $this->getParameter('hppVersion');
+    }
+
+    public function getHppCustomerCountry()
+    {
+        return $this->getParameter('hppCustomerCountry');
+    }
+
+    public function setHppCustomerCountry($value)
+    {
+        return $this->setParameter('hppCustomerCountry', $value);
+    }
+    
     public function getRequestHash()
     {
         $timestamp = $this->getTimestamp();
@@ -90,6 +100,7 @@ class HostedApmPaymentRequest extends HostedAbstractRequest
         $request['MERCHANT_RESPONSE_URL'] = $this->encode($this->getMerchantResponseUrl());
         $request['HPP_TX_STATUS_URL'] = $this->encode($this->getHppTxstatusUrl());
         $request['PM_METHODS'] = $this->encode($this->getPmMethods());
+        $request['HPP_VERSION'] = $this->encode($this->getHppVersion());
 
         return $request;
     }
