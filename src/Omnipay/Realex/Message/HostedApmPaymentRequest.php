@@ -9,6 +9,8 @@ namespace Omnipay\Realex\Message;
  * <code>
  *   // Create a gateway for the Heartland Gateway
  *   // (routes to GatewayFactory::create)
+ *   use Omnipay\Realex\Message\HostedApmPaymentMethods as apmMethods;
+ * 
  *   $gateway = Omnipay::create('Realex_Hosted');
  * 
  *   // Initialise the gateway
@@ -21,7 +23,7 @@ namespace Omnipay\Realex\Message;
  * 			'amount' => '10.00',
  * 			'currency' => 'EUR',
  * 			'transactionId' => str_shuffle('abcdefghijklmnopqrstuvwxyz'),
- * 			'pmMethods' => 'paypal|testpay|sepapm|sofort',
+ * 			'pmMethods' => array(apmMethods::PAYPAl, apmMethods::TESTPAY, apmMethods::SOFORT, apmMethods::SEPAPM),
  * 			'hppCustomerCountry' => 'US',
  * 			'hppCustomerFirstName' => 'James',
  * 			'hppCustomerLastName' => 'Mason',
@@ -52,9 +54,9 @@ class HostedApmPaymentRequest extends HostedAbstractRequest
         return $this->getParameter('pmMethods');
     }
 
-    public function setPmMethods($value)
+    public function setPmMethods($value = array())
     {
-        return $this->setParameter('pmMethods', $value);
+        return $this->setParameter('pmMethods', implode('|', $value));
     }
     
     public function getHppCustomerFirstName()

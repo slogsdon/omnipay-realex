@@ -1,6 +1,7 @@
 <?php
 require '../../vendor/autoload.php';
 
+use Omnipay\Realex\Message\HostedApmPaymentMethods as apmMethods;
 
 $gateway = Omnipay\Omnipay::create('Realex_Hosted')
     ->setMerchantId('realexprepro3')
@@ -14,7 +15,7 @@ $response = $gateway->apmPayment([
         'amount' => '10.00',
         'currency' => 'EUR',
         'transactionId' => str_shuffle('abcdefghijklmnopqrstuvwxyz'),
-        'pmMethods' => 'paypal|testpay|sepapm|sofort',
+        'pmMethods' => array(apmMethods::PAYPAl, apmMethods::TESTPAY, apmMethods::SOFORT, apmMethods::SEPAPM),
         'hppCustomerCountry' => 'US',
         'hppCustomerFirstName' => 'James',
         'hppCustomerLastName' => 'Mason',

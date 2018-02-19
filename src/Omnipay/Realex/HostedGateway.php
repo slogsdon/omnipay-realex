@@ -30,9 +30,9 @@ class HostedGateway extends RemoteGateway
         return $this->getParameter('pmMethods');
     }
 
-    public function setPmMethods($value)
+    public function setPmMethods($value = array())
     {
-        return $this->setParameter('pmMethods', $value);
+        return $this->setParameter('pmMethods', implode('|', $value));
     }
     
     public function getHppCustomerFirstName()
