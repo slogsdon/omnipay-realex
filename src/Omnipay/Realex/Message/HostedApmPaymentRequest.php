@@ -19,7 +19,7 @@ namespace Omnipay\Realex\Message;
  *           ->setAccount('account')
  *           ->setTestMode(true);
  *
- * 	 $response = $gateway->apmPayment([
+ * 	 $response = $gateway->purchase([
  * 			'amount' => '10.00',
  * 			'currency' => 'EUR',
  * 			'transactionId' => str_shuffle('abcdefghijklmnopqrstuvwxyz'),

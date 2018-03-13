@@ -25,8 +25,12 @@ class HostedGateway extends RemoteGateway
 
     public function purchase(array $parameters = array())
     {
-        $parameters['autoSettle'] = '1';
-        return $this->authorize($parameters);
+        if (!empty($parameters['pmMethods'])) {
+            return $this->apmPayment($parameters);
+        } else {
+            $parameters['autoSettle'] = '1';
+            return $this->authorize($parameters);
+        }
     }
 
     public function completeAuthorize(array $parameters = array())

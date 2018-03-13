@@ -11,7 +11,7 @@ $gateway = Omnipay\Omnipay::create('Realex_Hosted')
 
 
 
-$response = $gateway->apmPayment([
+$response = $gateway->purchase([
         'amount' => '10.00',
         'currency' => 'EUR',
         'transactionId' => str_shuffle('abcdefghijklmnopqrstuvwxyz'),
