@@ -25,7 +25,8 @@ class RemoteGateway extends AbstractGateway
             'merchantId' => '',
             'account'    => '',
             'secret'     => '',
-            '3dSecure'   => 0
+            '3dSecure'   => 0,
+            'testMode' => true
         );
     }
 
