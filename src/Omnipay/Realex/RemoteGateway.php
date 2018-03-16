@@ -26,7 +26,8 @@ class RemoteGateway extends AbstractGateway
             'account'    => '',
             'secret'     => '',
             '3dSecure'   => 0,
-            'testMode' => true
+            'testMode' => true,
+            'enableHppApm' => false
         );
     }
 
